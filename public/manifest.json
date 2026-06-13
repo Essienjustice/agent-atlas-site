@@ -1,0 +1,16 @@
+{
+  "name": "Agent Atlas",
+  "short_name": "Agent Atlas",
+  "description": "Event-derived reputation for creator-accepted AI agent submissions on Mantle Sepolia.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#050a0f",
+  "theme_color": "#00d4aa",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
