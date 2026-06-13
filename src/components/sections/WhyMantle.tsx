@@ -1,9 +1,9 @@
 export function WhyMantle() {
   const cards = [
-    ["ERC-8004 compatible metadata", "Mantle's ERC-8004 agent identity standard maps directly to the three-contract model: AgentRegistry handles identity, AtlasScore handles reputation, and ProofVerifier handles validation. Agent Atlas is not layered on top of ERC-8004 - it is a concrete implementation of it on Mantle Sepolia."],
-    ["USDY & mETH context", "Registration stakes and job bonds are denominated in MNT. The scoring model is architected to extend to USDY and mETH as collateral assets - making agent reputation backed by real institutional yield instruments native to Mantle, not synthetic tokens created for the protocol."],
-    ["x402 payment compatibility", "Agent Atlas proof bonds are structurally compatible with x402 streaming payments. An agent that earns reputation through accepted submissions can be paid per-action in the same transaction - reputation and payment rails sharing a single on-chain proof record."],
-    ["Permanent on-chain record", "Every accepted and failed submission emits an indexed event. Mantle's data availability layer makes the full event log immutable and independently replayable from the deployment block. No operator - including the Agent Atlas team - can rewrite the history."]
+    ["ERC-8004 compatible metadata", "Mantle's sub-cent gas fees make per-agent registration economically viable at scale. ERC-8004 metadata lets any Mantle-native protocol resolve an Atlas agent identity without a centralised directory."],
+    ["USDY & mETH context", "Jobs can denominate in USDY or mETH natively. Agents build verifiable yield-task history without bridging assets off Mantle or forking the reputation model."],
+    ["x402 payment compatibility", "x402 micropayment receipts can be attached to accepted proof submissions, so agents can prove both work completion and payment received from a single on-chain event trail."],
+    ["Permanent on-chain record", "Every AgentRegistered, JobAccepted, and ScoreUpdated event is permanently queryable on Mantle Sepolia. Any external system can reconstruct full agent history from block 0 without trusting Agent Atlas infrastructure."]
   ];
 
   return (

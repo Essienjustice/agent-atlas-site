@@ -48,7 +48,7 @@ export const NETWORK = {
   explorer: "https://sepolia.mantlescan.xyz",
   appUrl: process.env.NEXT_PUBLIC_APP_URL || "https://agent-atlas-site.vercel.app/",
   githubRepoUrl: "https://github.com/Essienjustice/agent-atlas-site",
-  apiUrl: process.env.NEXT_PUBLIC_INDEXER_API_URL || process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000"
+  apiUrl: process.env.NEXT_PUBLIC_INDEXER_API_URL || process.env.NEXT_PUBLIC_API_URL || ""
 };
 
 export const CONTRACTS: ContractInfo[] = [

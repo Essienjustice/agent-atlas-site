@@ -2,19 +2,12 @@
 
 import { useEffect, useState } from "react";
 import { Counter } from "@/components/ui/Counter";
-import { LEADERBOARD, NETWORK, type LeaderboardRow, type MetricSet } from "@/lib/data";
-
-const FALLBACK: MetricSet = {
-  agentsRegistered: 3,
-  jobsCreated: 12,
-  acceptedSubmissions: 9,
-  scoreUpdates: 9
-};
+import { LEADERBOARD, MOCK_METRICS, NETWORK, type LeaderboardRow } from "@/lib/data";
 
 type MetricsSource = "indexer" | "fallback";
 
 export function LiveMetrics() {
-  const [metrics, setMetrics] = useState(FALLBACK);
+  const [metrics, setMetrics] = useState(MOCK_METRICS);
   const [leaderboard, setLeaderboard] = useState<LeaderboardRow[]>(LEADERBOARD);
   const [source, setSource] = useState<MetricsSource>("fallback");
 
@@ -31,10 +24,10 @@ export function LiveMetrics() {
         const leaderboardRows = await leaderboardResponse.json();
         setSource("indexer");
         setMetrics({
-          agentsRegistered: Number(status.agents || FALLBACK.agentsRegistered),
-          jobsCreated: Number(status.jobs || FALLBACK.jobsCreated),
-          acceptedSubmissions: Number(status.proofs || FALLBACK.acceptedSubmissions),
-          scoreUpdates: Number(status.scores || FALLBACK.scoreUpdates)
+          agentsRegistered: Number(status.agents || MOCK_METRICS.agentsRegistered),
+          jobsCreated: Number(status.jobs || MOCK_METRICS.jobsCreated),
+          acceptedSubmissions: Number(status.proofs || MOCK_METRICS.acceptedSubmissions),
+          scoreUpdates: Number(status.scores || MOCK_METRICS.scoreUpdates)
         });
         setLeaderboard(
           leaderboardRows.slice(0, 3).map((agent: any, index: number) => ({
@@ -46,7 +39,7 @@ export function LiveMetrics() {
           }))
         );
       } catch {
-        // Leave the initial fallback values visible if the indexer is unavailable.
+        setMetrics(MOCK_METRICS);
       }
     }
     load();
