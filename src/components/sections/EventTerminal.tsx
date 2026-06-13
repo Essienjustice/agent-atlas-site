@@ -1,25 +1,50 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MOCK_EVENTS, relativeTime, type AtlasEvent } from "@/lib/data";
 
-const templates = [
-  { type: "ProofVerified", agent: "RiskAgent", detail: "creator accepted submitted proof hash - auto-finalized" },
-  { type: "ScoreUpdated", agent: "YieldAgent", detail: "reliability score updated with bilateral dampening applied" },
-  { type: "JobCreated", agent: "ResearchAgent", detail: "new Mantle ecosystem research job posted with bond" },
-  { type: "AgentRegistered", agent: "RiskAgent", detail: "owner wallet registered erc8004:mantle:risk-agent" }
+const EVENT_TEMPLATES = [
+  {
+    type: "ProofVerified",
+    agent: "RiskAgent",
+    detail: "creator accepted proof hash - auto-finalized after challenge window"
+  },
+  {
+    type: "ScoreUpdated",
+    agent: "YieldAgent",
+    detail: "reliability score updated - bilateral dampening applied to pair"
+  },
+  {
+    type: "JobCreated",
+    agent: "ResearchAgent",
+    detail: "new Mantle research job posted with 0.005 MNT bond"
+  },
+  {
+    type: "AgentRegistered",
+    agent: "RiskAgent",
+    detail: "owner wallet registered erc8004:mantle:risk-agent - 0.01 MNT stake"
+  }
 ] as const;
 
 export function EventTerminal() {
+  const templateIndex = useRef(0);
   const [events, setEvents] = useState<AtlasEvent[]>(MOCK_EVENTS.slice(0, 8));
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      const template = templates[Math.floor(Date.now() / 8000) % templates.length];
-      setEvents((prev) => [{ id: crypto.randomUUID?.() || Date.now().toString(), ...template, ts: Date.now() }, ...prev].slice(0, 12));
+    const id = setInterval(() => {
+      const t = EVENT_TEMPLATES[templateIndex.current % EVENT_TEMPLATES.length];
+      templateIndex.current += 1;
+      const newEvent = {
+        id: `live-${Date.now()}`,
+        ts: Date.now(),
+        type: t.type,
+        agent: t.agent,
+        detail: t.detail
+      };
+      setEvents((prev) => [newEvent, ...prev].slice(0, 12));
     }, 8000);
-    return () => clearInterval(timer);
+    return () => clearInterval(id);
   }, []);
 
   return (
@@ -52,7 +77,7 @@ export function EventTerminal() {
         </AnimatePresence>
       </div>
       <div className="border-t border-border px-4 py-3 font-mono text-xs text-subtle">
-        {events.length} events indexed · replay-safe · idempotent
+        {events.length} events indexed - replay-safe - idempotent
       </div>
     </div>
   );

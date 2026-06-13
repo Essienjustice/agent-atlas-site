@@ -4,21 +4,19 @@ import { useEffect, useState } from "react";
 import { Counter } from "@/components/ui/Counter";
 import { LEADERBOARD, NETWORK, type LeaderboardRow, type MetricSet } from "@/lib/data";
 
-const FALLBACK_METRICS: MetricSet = {
+const FALLBACK: MetricSet = {
   agentsRegistered: 3,
   jobsCreated: 12,
   acceptedSubmissions: 9,
   scoreUpdates: 9
 };
 
-type MetricsState = {
-  metrics: MetricSet;
-  leaderboard: LeaderboardRow[];
-  source: "indexer" | "fallback";
-};
+type MetricsSource = "indexer" | "fallback";
 
 export function LiveMetrics() {
-  const [state, setState] = useState<MetricsState>({ metrics: FALLBACK_METRICS, leaderboard: LEADERBOARD, source: "fallback" });
+  const [metrics, setMetrics] = useState(FALLBACK);
+  const [leaderboard, setLeaderboard] = useState<LeaderboardRow[]>(LEADERBOARD);
+  const [source, setSource] = useState<MetricsSource>("fallback");
 
   useEffect(() => {
     const controller = new AbortController();
@@ -30,23 +28,23 @@ export function LiveMetrics() {
         ]);
         if (!statusResponse.ok || !leaderboardResponse.ok) throw new Error("indexer unavailable");
         const status = await statusResponse.json();
-        const leaderboard = await leaderboardResponse.json();
-        setState({
-          source: "indexer",
-          metrics: {
-            agentsRegistered: Number(status.agents || FALLBACK_METRICS.agentsRegistered),
-            jobsCreated: Number(status.jobs || FALLBACK_METRICS.jobsCreated),
-            acceptedSubmissions: Number(status.proofs || FALLBACK_METRICS.acceptedSubmissions),
-            scoreUpdates: Number(status.scores || FALLBACK_METRICS.scoreUpdates)
-          },
-          leaderboard: leaderboard.slice(0, 3).map((agent: any, index: number) => ({
+        const leaderboardRows = await leaderboardResponse.json();
+        setSource("indexer");
+        setMetrics({
+          agentsRegistered: Number(status.agents || FALLBACK.agentsRegistered),
+          jobsCreated: Number(status.jobs || FALLBACK.jobsCreated),
+          acceptedSubmissions: Number(status.proofs || FALLBACK.acceptedSubmissions),
+          scoreUpdates: Number(status.scores || FALLBACK.scoreUpdates)
+        });
+        setLeaderboard(
+          leaderboardRows.slice(0, 3).map((agent: any, index: number) => ({
             rank: index + 1,
             name: agent.name,
             score: agent.score?.reliabilityScore || 0,
             jobs: agent.score?.taskVolume || 0,
             uniqueClients: agent.uniquePositiveCounterparties || 1
           }))
-        });
+        );
       } catch {
         // Leave the initial fallback values visible if the indexer is unavailable.
       }
@@ -56,10 +54,10 @@ export function LiveMetrics() {
   }, []);
 
   const stats = [
-    ["Agents", state.metrics.agentsRegistered],
-    ["Jobs", state.metrics.jobsCreated],
-    ["Accepted submissions", state.metrics.acceptedSubmissions],
-    ["Score updates", state.metrics.scoreUpdates]
+    ["Agents", metrics.agentsRegistered],
+    ["Jobs", metrics.jobsCreated],
+    ["Accepted submissions", metrics.acceptedSubmissions],
+    ["Score updates", metrics.scoreUpdates]
   ] as const;
 
   return (
@@ -70,7 +68,7 @@ export function LiveMetrics() {
             <div className="section-label">Live Metrics</div>
             <h2 className="section-title">Indexer-derived protocol state.</h2>
           </div>
-          <span className="badge">Demo data · indexer fallback active{state.source === "indexer" ? " · live indexer connected" : ""}</span>
+          <span className="badge">Demo data - indexer fallback active{source === "indexer" ? " - live indexer connected" : ""}</span>
         </div>
         <div className="grid gap-4 md:grid-cols-4">
           {stats.map(([label, value]) => (
@@ -94,7 +92,7 @@ export function LiveMetrics() {
               </tr>
             </thead>
             <tbody>
-              {state.leaderboard.map((row) => (
+              {leaderboard.map((row) => (
                 <tr className="border-t border-border" key={row.name}>
                   <td className="py-4 font-mono text-green">#{row.rank}</td>
                   <td className="font-display">{row.name}</td>

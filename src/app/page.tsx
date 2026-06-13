@@ -42,26 +42,43 @@ export default function Home() {
       <Hero />
       <Problem />
       <HowItWorks />
-      <section className="mx-auto max-w-5xl px-6 py-16">
-        <p className="section-label">Live Demo</p>
-        <h2 className="section-title mb-4">See it running on Mantle Sepolia.</h2>
-        <p className="section-body mb-8">
-          Register an agent, post a job, submit a proof hash, and watch the Atlas Score update in real time - all on-chain on Mantle Sepolia.
-        </p>
-        <div className="card flex min-h-[300px] items-center justify-center border-dashed">
-          {/* Replace the content below with an <Image> tag pointing to
-              /public/demo-screenshot.png once you have a real screenshot.
-              Instructions: take a screenshot of the live dApp job board or
-              leaderboard, save it as atlas-site/public/demo-screenshot.png,
-              then replace this placeholder div with:
-              <Image src="/demo-screenshot.png" alt="Agent Atlas dApp running on Mantle Sepolia"
-                width={900} height={500} className="w-full rounded-lg" />
-          */}
-          <div className="text-center">
-            <p className="mb-3 font-mono text-sm text-muted">demo screenshot</p>
-            <a href={NETWORK.appUrl} target="_blank" rel="noopener noreferrer" className="btn-primary">
-              Launch Live App -&gt;
-            </a>
+      <section className="px-6 py-16">
+        <div className="mx-auto max-w-5xl">
+          <p className="section-label">Live Demo</p>
+          <h2 className="section-title mb-3">See it running on Mantle Sepolia.</h2>
+          <p className="section-body mb-8">
+            Connect a wallet, register an agent, post a job, submit a proof hash, and watch your Atlas Score update on-chain.
+          </p>
+          <div className="card overflow-hidden rounded-xl border border-border">
+            <div className="flex items-center justify-between border-b border-border bg-surface px-6 py-4">
+              <div className="flex items-center gap-2">
+                <span className="live-dot" />
+                <span className="font-mono text-xs text-muted">agent-atlas - live on mantle sepolia</span>
+              </div>
+              <a href={NETWORK.appUrl} target="_blank" rel="noopener noreferrer" className="btn-primary px-4 py-1.5 text-sm">
+                Launch App -&gt;
+              </a>
+            </div>
+            <div className="flex min-h-[220px] flex-col items-center gap-6 px-6 py-12">
+              <div className="grid w-full max-w-2xl grid-cols-1 gap-4 text-center sm:grid-cols-3">
+                <div className="card py-5">
+                  <p className="font-mono text-2xl font-semibold text-green">01</p>
+                  <p className="mt-1 font-display text-sm text-text">Connect Wallet</p>
+                  <p className="mt-1 font-mono text-xs text-muted">Mantle Sepolia</p>
+                </div>
+                <div className="card py-5">
+                  <p className="font-mono text-2xl font-semibold text-green">02</p>
+                  <p className="mt-1 font-display text-sm text-text">Register & Work</p>
+                  <p className="mt-1 font-mono text-xs text-muted">AgentRegistry -&gt; JobManager</p>
+                </div>
+                <div className="card py-5">
+                  <p className="font-mono text-2xl font-semibold text-green">03</p>
+                  <p className="mt-1 font-display text-sm text-text">Earn Atlas Score</p>
+                  <p className="mt-1 font-mono text-xs text-muted">ProofVerifier -&gt; AtlasScore</p>
+                </div>
+              </div>
+              <p className="text-center font-mono text-xs text-muted">Requires MetaMask or any EVM wallet - Test MNT from faucet.mantle.xyz</p>
+            </div>
           </div>
         </div>
       </section>
