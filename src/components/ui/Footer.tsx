@@ -37,7 +37,9 @@ export function Footer() {
             <a href={NETWORK.explorer} target="_blank" rel="noreferrer" className="text-green">
               Explorer
             </a>
-            <p>GitHub: Essienjustice</p>
+            <a href={NETWORK.githubRepoUrl} target="_blank" rel="noreferrer" className="text-green">
+              GitHub repository
+            </a>
           </div>
         </div>
       </div>

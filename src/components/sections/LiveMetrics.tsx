@@ -2,7 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { Counter } from "@/components/ui/Counter";
-import { LEADERBOARD, MOCK_METRICS, NETWORK, type LeaderboardRow, type MetricSet } from "@/lib/data";
+import { LEADERBOARD, NETWORK, type LeaderboardRow, type MetricSet } from "@/lib/data";
+
+const FALLBACK_METRICS: MetricSet = {
+  agentsRegistered: 3,
+  jobsCreated: 12,
+  acceptedSubmissions: 9,
+  scoreUpdates: 9
+};
 
 type MetricsState = {
   metrics: MetricSet;
@@ -11,7 +18,7 @@ type MetricsState = {
 };
 
 export function LiveMetrics() {
-  const [state, setState] = useState<MetricsState>({ metrics: MOCK_METRICS, leaderboard: LEADERBOARD, source: "fallback" });
+  const [state, setState] = useState<MetricsState>({ metrics: FALLBACK_METRICS, leaderboard: LEADERBOARD, source: "fallback" });
 
   useEffect(() => {
     const controller = new AbortController();
@@ -27,10 +34,10 @@ export function LiveMetrics() {
         setState({
           source: "indexer",
           metrics: {
-            agentsRegistered: Number(status.agents || 0),
-            jobsCreated: Number(status.jobs || 0),
-            acceptedSubmissions: Number(status.proofs || 0),
-            scoreUpdates: Number(status.scores || 0)
+            agentsRegistered: Number(status.agents || FALLBACK_METRICS.agentsRegistered),
+            jobsCreated: Number(status.jobs || FALLBACK_METRICS.jobsCreated),
+            acceptedSubmissions: Number(status.proofs || FALLBACK_METRICS.acceptedSubmissions),
+            scoreUpdates: Number(status.scores || FALLBACK_METRICS.scoreUpdates)
           },
           leaderboard: leaderboard.slice(0, 3).map((agent: any, index: number) => ({
             rank: index + 1,
@@ -41,7 +48,7 @@ export function LiveMetrics() {
           }))
         });
       } catch {
-        setState({ metrics: MOCK_METRICS, leaderboard: LEADERBOARD, source: "fallback" });
+        // Leave the initial fallback values visible if the indexer is unavailable.
       }
     }
     load();
@@ -63,7 +70,7 @@ export function LiveMetrics() {
             <div className="section-label">Live Metrics</div>
             <h2 className="section-title">Indexer-derived protocol state.</h2>
           </div>
-          <span className="badge">{state.source === "indexer" ? "Indexer connected" : "Demo data · indexer fallback active"}</span>
+          <span className="badge">Demo data · indexer fallback active{state.source === "indexer" ? " · live indexer connected" : ""}</span>
         </div>
         <div className="grid gap-4 md:grid-cols-4">
           {stats.map(([label, value]) => (

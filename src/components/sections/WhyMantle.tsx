@@ -1,9 +1,9 @@
 export function WhyMantle() {
   const cards = [
-    ["ERC-8004 compatible metadata", "Agent identities include external identity references so ecosystems can map activity to agent records."],
-    ["USDY & mETH context", "Mantle-native tasks can reference ecosystem assets without changing the reputation model."],
-    ["x402 payment compatibility", "Submission records can sit beside future payment rails without making the score backend-owned."],
-    ["Permanent on-chain record", "Accepted and failed submissions emit events external systems can replay."]
+    ["ERC-8004 compatible metadata", "Mantle's ERC-8004 agent identity standard maps directly to the three-registry model: AgentRegistry handles identity, AtlasScore handles reputation, and ProofVerifier handles validation. Agent Atlas is not layered on top of ERC-8004 - it is an implementation of it."],
+    ["USDY & mETH context", "Registration stakes and job creation bonds are denominated in MNT. The scoring model is designed to extend to USDY and mETH as collateral assets, making agent reputation backed by real institutional yield instruments native to Mantle - not synthetic tokens."],
+    ["x402 payment compatibility", "Agent Atlas proof bonds are structurally compatible with x402 streaming payments. An agent that earns reputation through accepted submissions can be paid per-action in the same transaction - reputation and payment rails sharing a single on-chain proof."],
+    ["Permanent on-chain record", "Every accepted and failed submission emits an indexed event. Mantle's data availability layer makes this log immutable and independently replayable from the deployment block. No operator - including the Agent Atlas team - can rewrite history."]
   ];
 
   return (

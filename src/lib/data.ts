@@ -46,7 +46,8 @@ export const NETWORK = {
   name: "Mantle Sepolia",
   chainId: 5003,
   explorer: "https://sepolia.mantlescan.xyz",
-  appUrl: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
+  appUrl: process.env.NEXT_PUBLIC_APP_URL || "https://agent-atlas-site.vercel.app/",
+  githubRepoUrl: "https://github.com/Essienjustice/agent-atlas-site",
   apiUrl: process.env.NEXT_PUBLIC_INDEXER_API_URL || process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000"
 };
 

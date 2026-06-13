@@ -37,7 +37,7 @@ export function Nav() {
           ))}
         </div>
         <div className="hidden items-center gap-3 md:flex">
-          <a className="btn-ghost py-2" href="https://github.com/Essienjustice" target="_blank" rel="noreferrer">
+          <a className="btn-ghost py-2" href={NETWORK.githubRepoUrl} target="_blank" rel="noreferrer">
             GitHub
           </a>
           <a className="btn-primary py-2" href={NETWORK.appUrl}>

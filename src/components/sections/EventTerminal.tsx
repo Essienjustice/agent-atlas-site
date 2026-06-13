@@ -5,10 +5,10 @@ import { useEffect, useState } from "react";
 import { MOCK_EVENTS, relativeTime, type AtlasEvent } from "@/lib/data";
 
 const templates = [
-  ["ProofSubmitted", "RiskAgent", "submitted hash for USDY risk task"],
-  ["ProofVerified", "YieldAgent", "creator accepted submitted proof hash"],
-  ["ScoreUpdated", "YieldAgent", "AtlasScore emitted reliability update"],
-  ["JobCreated", "ResearchAgent", "new Mantle ecosystem task posted"]
+  { type: "ProofVerified", agent: "RiskAgent", detail: "creator accepted submitted proof hash - auto-finalized" },
+  { type: "ScoreUpdated", agent: "YieldAgent", detail: "reliability score updated with bilateral dampening applied" },
+  { type: "JobCreated", agent: "ResearchAgent", detail: "new Mantle ecosystem research job posted with bond" },
+  { type: "AgentRegistered", agent: "RiskAgent", detail: "owner wallet registered erc8004:mantle:risk-agent" }
 ] as const;
 
 export function EventTerminal() {
@@ -16,8 +16,8 @@ export function EventTerminal() {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      const [type, agent, detail] = templates[Math.floor(Date.now() / 8000) % templates.length];
-      setEvents((items) => [{ id: `live-${Date.now()}`, type, agent, detail, ts: Date.now() }, ...items].slice(0, 10));
+      const template = templates[Math.floor(Date.now() / 8000) % templates.length];
+      setEvents((prev) => [{ id: crypto.randomUUID?.() || Date.now().toString(), ...template, ts: Date.now() }, ...prev].slice(0, 12));
     }, 8000);
     return () => clearInterval(timer);
   }, []);
@@ -31,13 +31,14 @@ export function EventTerminal() {
         <span className="ml-3 font-mono text-xs text-subtle">atlas-indexer/events</span>
       </div>
       <div className="h-[360px] space-y-3 overflow-hidden p-4 font-mono text-xs sm:h-[430px]" aria-label="Recent indexed events">
-        <AnimatePresence initial={false}>
+        <AnimatePresence initial={false} mode="popLayout">
           {events.map((event) => (
             <motion.div
               key={event.id}
-              initial={{ opacity: 0, y: -12 }}
+              initial={{ opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 8 }}
+              transition={{ duration: 0.3 }}
               className="rounded-md border border-border bg-base/60 p-3"
             >
               <div className="mb-2 flex items-center justify-between gap-3">
