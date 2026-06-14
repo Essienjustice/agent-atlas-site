@@ -4,11 +4,12 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        "atlas-bg": "#0a0a0f",
-        "atlas-card": "#111118",
-        "atlas-border": "#1e1e2e",
+        "atlas-bg": "#08090e",
+        "atlas-card": "#0f1017",
+        "atlas-border": "#1a1b26",
         "atlas-purple": "#7c3aed",
         "atlas-purple-light": "#a78bfa",
+        "atlas-teal": "#2dd4bf",
         "atlas-green": "#4ade80",
         base: "#050a0f",
         surface: "#0d1520",

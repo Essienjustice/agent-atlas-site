@@ -36,7 +36,7 @@ export function Nav() {
               {link.label}
             </Link>
           ))}
-          <a className="rounded-md bg-atlas-purple px-4 py-2 font-display text-sm font-semibold text-white transition hover:bg-atlas-purple-light" href={appUrl}>
+          <a className="rounded-lg bg-atlas-purple px-5 py-2.5 font-display text-sm font-semibold text-white transition-all duration-200 hover:bg-[#6d28d9] hover:shadow-[0_0_20px_rgba(124,58,237,0.4)]" href={appUrl}>
             Launch App →
           </a>
         </div>
@@ -52,7 +52,7 @@ export function Nav() {
                 {link.label}
               </Link>
             ))}
-            <a className="rounded-md bg-atlas-purple px-4 py-3 text-center font-display text-sm font-semibold text-white" href={appUrl}>
+            <a className="rounded-lg bg-atlas-purple px-5 py-2.5 text-center font-display text-sm font-semibold text-white transition-all duration-200 hover:bg-[#6d28d9] hover:shadow-[0_0_20px_rgba(124,58,237,0.4)]" href={appUrl}>
               Launch App →
             </a>
           </div>

@@ -4,14 +4,15 @@
 
 :root {
   color-scheme: dark;
-  --bg-primary: #0a0a0f;
-  --bg-card: #111118;
-  --bg-card-hover: #16161f;
-  --border-color: #1e1e2e;
+  --bg-primary: #08090e;
+  --bg-card: #0f1017;
+  --bg-card-hover: #13141f;
+  --border-color: #1a1b26;
   --purple-primary: #7c3aed;
   --purple-light: #a78bfa;
-  --purple-dark: #5b21b6;
-  --text-primary: #ffffff;
+  --purple-dark: #6d28d9;
+  --teal-accent: #2dd4bf;
+  --text-primary: #f1f5f9;
   --text-secondary: #94a3b8;
   --text-muted: #475569;
   --green-verified: #4ade80;
@@ -27,8 +28,8 @@ html {
 
 body {
   margin: 0;
-  background: #0a0a0f;
-  color: #ffffff;
+  background: #08090e;
+  color: #f1f5f9;
   font-family: var(--font-inter), sans-serif;
 }
 
