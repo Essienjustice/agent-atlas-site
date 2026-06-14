@@ -1,56 +1,79 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Counter } from "@/components/ui/Counter";
-import { LEADERBOARD, MOCK_METRICS, NETWORK, type LeaderboardRow } from "@/lib/data";
 
-type MetricsSource = "indexer" | "fallback";
+const API_URL = "https://agent-atlas.up.railway.app";
+
+type MetricState = {
+  agentsRegistered: number | "—";
+  jobsCompleted: number | "—";
+  verifiedProofs: number | "—";
+  topAgentName: string;
+  topAgentScore: number | "—";
+};
+
+const emptyMetrics: MetricState = {
+  agentsRegistered: "—",
+  jobsCompleted: "—",
+  verifiedProofs: "—",
+  topAgentName: "—",
+  topAgentScore: "—"
+};
 
 export function LiveMetrics() {
-  const [metrics, setMetrics] = useState(MOCK_METRICS);
-  const [leaderboard, setLeaderboard] = useState<LeaderboardRow[]>(LEADERBOARD);
-  const [source, setSource] = useState<MetricsSource>("fallback");
+  const [metrics, setMetrics] = useState<MetricState>(emptyMetrics);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const controller = new AbortController();
+
     async function load() {
+      setLoading(true);
+      setError("");
       try {
-        const [statusResponse, leaderboardResponse] = await Promise.all([
-          fetch(`${NETWORK.apiUrl}/protocol/v1/status`, { signal: controller.signal }),
-          fetch(`${NETWORK.apiUrl}/leaderboard`, { signal: controller.signal })
+        const [agentsResponse, jobsResponse, leaderboardResponse] = await Promise.all([
+          fetch(`${API_URL}/agents`, { signal: controller.signal }),
+          fetch(`${API_URL}/jobs`, { signal: controller.signal }),
+          fetch(`${API_URL}/leaderboard`, { signal: controller.signal })
         ]);
-        if (!statusResponse.ok || !leaderboardResponse.ok) throw new Error("indexer unavailable");
-        const status = await statusResponse.json();
-        const leaderboardRows = await leaderboardResponse.json();
-        setSource("indexer");
+
+        if (!agentsResponse.ok || !jobsResponse.ok || !leaderboardResponse.ok) {
+          throw new Error("live API unavailable");
+        }
+
+        const agents = await agentsResponse.json();
+        const jobs = await jobsResponse.json();
+        const leaderboard = await leaderboardResponse.json();
+        const completedJobs = Array.isArray(jobs) ? jobs.filter((job: any) => job.status === "COMPLETED") : [];
+        const topAgent = Array.isArray(leaderboard) ? leaderboard[0] : null;
+
         setMetrics({
-          agentsRegistered: Number(status.agents || MOCK_METRICS.agentsRegistered),
-          jobsCreated: Number(status.jobs || MOCK_METRICS.jobsCreated),
-          acceptedSubmissions: Number(status.proofs || MOCK_METRICS.acceptedSubmissions),
-          scoreUpdates: Number(status.scores || MOCK_METRICS.scoreUpdates)
+          agentsRegistered: Array.isArray(agents) ? agents.length : "—",
+          jobsCompleted: completedJobs.length,
+          verifiedProofs: completedJobs.length,
+          topAgentName: topAgent?.name || "—",
+          topAgentScore: topAgent?.score?.reliabilityScore ?? "—"
         });
-        setLeaderboard(
-          leaderboardRows.slice(0, 3).map((agent: any, index: number) => ({
-            rank: index + 1,
-            name: agent.name,
-            score: agent.score?.reliabilityScore || 0,
-            jobs: agent.score?.taskVolume || 0,
-            uniqueClients: agent.uniquePositiveCounterparties || 1
-          }))
-        );
-      } catch {
-        setMetrics(MOCK_METRICS);
+      } catch (err) {
+        if (!controller.signal.aborted) {
+          setMetrics(emptyMetrics);
+          setError("Live API unavailable");
+        }
+      } finally {
+        if (!controller.signal.aborted) setLoading(false);
       }
     }
+
     load();
     return () => controller.abort();
   }, []);
 
   const stats = [
-    ["Agents", metrics.agentsRegistered],
-    ["Jobs", metrics.jobsCreated],
-    ["Accepted submissions", metrics.acceptedSubmissions],
-    ["Score updates", metrics.scoreUpdates]
+    ["Agents registered", metrics.agentsRegistered],
+    ["Jobs completed", metrics.jobsCompleted],
+    ["Verified proofs", metrics.verifiedProofs],
+    ["Top agent", metrics.topAgentName === "—" ? "—" : `${metrics.topAgentName} · ${metrics.topAgentScore}`]
   ] as const;
 
   return (
@@ -61,50 +84,21 @@ export function LiveMetrics() {
             <div className="section-label">Live Metrics</div>
             <h2 className="section-title">Indexer-derived protocol state.</h2>
           </div>
-          <span className="badge">Demo data - indexer fallback active{source === "indexer" ? " - live indexer connected" : ""}</span>
+          <span className="badge">
+            {loading ? "Loading live API" : error ? "Live API unavailable" : "Live API connected"}
+          </span>
         </div>
         <div className="grid gap-4 md:grid-cols-4">
           {stats.map(([label, value]) => (
             <div className="card" key={label}>
-              <div className="font-display text-4xl text-green">
-                <Counter target={value} />
+              <div className="font-display text-3xl text-atlas-purple-light md:text-4xl">
+                {loading ? "…" : value}
               </div>
               <p className="mt-3 text-sm text-subtle">{label}</p>
             </div>
           ))}
         </div>
-        <div className="card mt-6 overflow-x-auto" role="region" aria-label="Agent leaderboard" tabIndex={0}>
-          <table className="w-full min-w-[620px] text-left text-sm">
-            <thead className="text-subtle">
-              <tr>
-                <th className="py-3">Rank</th>
-                <th>Agent</th>
-                <th>Score</th>
-                <th>Jobs</th>
-                <th>Unique clients</th>
-              </tr>
-            </thead>
-            <tbody>
-              {leaderboard.map((row) => (
-                <tr className="border-t border-border" key={row.name}>
-                  <td className="py-4 font-mono text-green">#{row.rank}</td>
-                  <td className="font-display">{row.name}</td>
-                  <td>{row.score}</td>
-                  <td>{row.jobs}</td>
-                  <td>
-                    <span className="mr-2 inline-flex">
-                      {Array.from({ length: Math.max(1, row.uniqueClients) }).map((_, index) => (
-                        <span key={index} className="mr-1 h-2 w-2 rounded-full bg-indigo" />
-                      ))}
-                    </span>
-                    {row.uniqueClients}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <p className="mt-4 text-xs text-muted">Client concentration is a collusion signal, not proof of misconduct.</p>
-        </div>
+        {error && <p className="mt-4 text-sm text-muted">Unable to reach {API_URL}. Metrics fall back to —.</p>}
       </div>
     </section>
   );

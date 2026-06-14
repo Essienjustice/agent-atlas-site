@@ -1,54 +1,60 @@
-import Link from "next/link";
-import { NETWORK } from "@/lib/data";
+import { AtlasLogo } from "../ui/AtlasLogo";
+
+const appUrl = "https://agent-atlas-tau.vercel.app";
+const apiStatusUrl = "https://agent-atlas.up.railway.app/health";
+const explorer = "https://sepolia.mantlescan.xyz/address";
+
+const appLinks = [
+  ["Launch dApp", appUrl],
+  ["View Leaderboard", `${appUrl}/#leaderboard`],
+  ["Live Activity", `${appUrl}/#activity`],
+  ["API Status", apiStatusUrl]
+];
+
+const codeLinks = [
+  ["GitHub (monorepo)", "https://github.com/Essienjustice/agent-atlas"],
+  ["GitHub (site)", "https://github.com/Essienjustice/agent-atlas-site"],
+  ["AgentRegistry", `${explorer}/0x3cf0763443C8Ab7672f51B8e1B34956786522a0e`],
+  ["JobManager", `${explorer}/0x74EE37e8Da3e483be6aB8a6d8E9a532B7683d4fb`],
+  ["ProofVerifier", `${explorer}/0xB9Dd5738Aa5410fe5aa392A83296f7df674Ff565`],
+  ["AtlasScore", `${explorer}/0x5fCca16EB477B0720bb91ec8EbF0b4Ef4891b2BB`]
+];
 
 export function Footer() {
   return (
-    <footer className="border-t border-border bg-base px-5 py-12" aria-label="Site footer">
-      <div className="mx-auto grid max-w-7xl gap-8 md:grid-cols-4">
+    <footer className="border-t border-atlas-border bg-atlas-bg px-5 py-12" aria-label="Site footer">
+      <div className="mx-auto grid max-w-7xl gap-8 md:grid-cols-3">
         <div>
-          <div className="mb-3 flex items-center gap-3 font-display text-lg font-semibold">
-            <span className="live-dot" />
+          <div className="mb-3 flex items-center gap-3 font-display text-lg font-semibold text-white">
+            <AtlasLogo size={36} />
             Agent Atlas
           </div>
-          <p className="text-sm leading-7 text-subtle">Event-sourced reputation for creator-accepted AI agent submissions.</p>
+          <p className="text-sm leading-7 text-subtle">On-chain reputation for autonomous AI agents. Built on Mantle.</p>
+          <p className="mt-4 text-sm text-muted">Built for Mantle Turing Test Hackathon 2026</p>
         </div>
         <div>
-          <h3 className="mb-3 font-display text-sm text-text">Protocol</h3>
+          <h3 className="mb-3 font-display text-sm text-white">Links</h3>
           <div className="flex flex-col gap-2 text-sm text-subtle">
-            <Link href="/#how-it-works">How it works</Link>
-            <Link href="/contracts">Contracts</Link>
-            <Link href="/#security">Security model</Link>
+            {appLinks.map(([label, href]) => (
+              <a key={href} href={href} target="_blank" rel="noreferrer" className="transition hover:text-atlas-purple-light">
+                {label}
+              </a>
+            ))}
           </div>
         </div>
         <div>
-          <h3 className="mb-3 font-display text-sm text-text">Docs</h3>
+          <h3 className="mb-3 font-display text-sm text-white">Contracts & Code</h3>
           <div className="flex flex-col gap-2 text-sm text-subtle">
-            <Link href="/docs">Overview</Link>
-            <Link href="/docs/architecture">Architecture</Link>
-            <Link href="/docs/events">Events</Link>
-            <Link href="/docs/risks">Risks</Link>
-          </div>
-        </div>
-        <div>
-          <h3 className="mb-3 font-display text-sm text-text">Network</h3>
-          <div className="space-y-2 text-sm text-subtle">
-            <p>{NETWORK.name}</p>
-            <p>Chain ID {NETWORK.chainId}</p>
-            <a href={NETWORK.explorer} target="_blank" rel="noreferrer" className="text-green">
-              Explorer
-            </a>
-            <a href={NETWORK.githubRepoUrl} target="_blank" rel="noreferrer" className="text-green">
-              GitHub repository
-            </a>
+            {codeLinks.map(([label, href]) => (
+              <a key={href} href={href} target="_blank" rel="noreferrer" className="transition hover:text-atlas-purple-light">
+                {label}
+              </a>
+            ))}
           </div>
         </div>
       </div>
-      <div className="mx-auto mt-10 flex max-w-7xl flex-col justify-between gap-4 border-t border-border pt-6 text-sm text-muted md:flex-row">
-        <span>Built for Agent Atlas protocol demo · Mantle Turing Test Hackathon 2026</span>
-        <span className="flex items-center gap-2">
-          <span className="live-dot" />
-          Mantle testnet · event-sourced
-        </span>
+      <div className="mx-auto mt-10 border-t border-atlas-border pt-6 text-sm text-muted">
+        © 2026 Agent Atlas · Mantle Turing Test Hackathon · All contracts verified on Mantle Sepolia
       </div>
     </footer>
   );
