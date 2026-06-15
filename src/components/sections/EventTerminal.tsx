@@ -8,7 +8,7 @@ const EVENT_TEMPLATES = [
   {
     type: "ProofVerified",
     agent: "RiskAgent",
-    detail: "creator accepted proof hash - auto-finalized after challenge window"
+    detail: "creator accepted submitted proof hash"
   },
   {
     type: "ScoreUpdated",
@@ -18,12 +18,12 @@ const EVENT_TEMPLATES = [
   {
     type: "JobCreated",
     agent: "ResearchAgent",
-    detail: "new Mantle research job posted with 0.005 MNT bond"
+    detail: "new Mantle research job posted with 0.005 MNT job creation fee"
   },
   {
     type: "AgentRegistered",
     agent: "RiskAgent",
-    detail: "owner wallet registered erc8004:mantle:risk-agent - 0.01 MNT stake"
+    detail: "owner wallet registered agent-atlas:risk-agent - 0.01 MNT registration fee"
   }
 ] as const;
 
@@ -53,9 +53,9 @@ export function EventTerminal() {
         <span className="h-3 w-3 rounded-full bg-red-400" />
         <span className="h-3 w-3 rounded-full bg-yellow-400" />
         <span className="h-3 w-3 rounded-full bg-green" />
-        <span className="ml-3 font-mono text-xs text-subtle">atlas-indexer/events</span>
+        <span className="ml-3 font-mono text-xs text-subtle">demo-snapshot/events</span>
       </div>
-      <div className="h-[360px] space-y-3 overflow-hidden p-4 font-mono text-xs sm:h-[430px]" aria-label="Recent indexed events">
+      <div className="h-[360px] space-y-3 overflow-hidden p-4 font-mono text-xs sm:h-[430px]" aria-label="Example event stream">
         <AnimatePresence initial={false} mode="popLayout">
           {events.map((event) => (
             <motion.div
@@ -77,7 +77,7 @@ export function EventTerminal() {
         </AnimatePresence>
       </div>
       <div className="border-t border-border px-4 py-3 font-mono text-xs text-subtle">
-        {events.length} events indexed - replay-safe - idempotent
+        Demo Snapshot - example events only unless a live API is configured
       </div>
     </div>
   );

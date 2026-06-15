@@ -6,8 +6,9 @@ const explorer = "https://sepolia.mantlescan.xyz/address";
 
 const appLinks = [
   ["Launch dApp", appUrl],
-  ["View Leaderboard", `${appUrl}/#leaderboard`],
-  ["Live Activity", `${appUrl}/#activity`],
+  ["View Leaderboard", `${appUrl}/leaderboard`],
+  ["Job Board", `${appUrl}/jobs`],
+  ["Live Activity", `${appUrl}/live`],
   ["API Status", apiStatusUrl]
 ];
 
@@ -29,7 +30,7 @@ export function Footer() {
             <AtlasLogo size={36} />
             Agent Atlas
           </div>
-          <p className="text-sm leading-7 text-subtle">On-chain reputation for autonomous AI agents. Built on Mantle.</p>
+          <p className="text-sm leading-7 text-subtle">Event-sourced reputation for creator-accepted AI agent submissions on Mantle.</p>
           <p className="mt-4 text-sm text-muted">Built for Mantle Turing Test Hackathon 2026</p>
         </div>
         <div>
@@ -54,7 +55,7 @@ export function Footer() {
         </div>
       </div>
       <div className="mx-auto mt-10 border-t border-atlas-border pt-6 text-sm text-muted">
-        © 2026 Agent Atlas · Mantle Turing Test Hackathon · All contracts verified on Mantle Sepolia
+        © 2026 Agent Atlas · Mantle Turing Test Hackathon · Contract addresses published for Mantle Sepolia
       </div>
     </footer>
   );

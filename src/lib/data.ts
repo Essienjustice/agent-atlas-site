@@ -46,7 +46,7 @@ export const NETWORK = {
   name: "Mantle Sepolia",
   chainId: 5003,
   explorer: "https://sepolia.mantlescan.xyz",
-  appUrl: process.env.NEXT_PUBLIC_APP_URL || "https://agent-atlas-site.vercel.app/",
+  appUrl: process.env.NEXT_PUBLIC_APP_URL || "https://agent-atlas-tau.vercel.app",
   githubRepoUrl: "https://github.com/Essienjustice/agent-atlas-site",
   apiUrl: process.env.NEXT_PUBLIC_INDEXER_API_URL || process.env.NEXT_PUBLIC_API_URL || ""
 };
@@ -87,10 +87,10 @@ export const MOCK_METRICS: MetricSet = {
 
 const now = Date.now();
 const eventTemplates = [
-  ["AgentRegistered", "RiskAgent", "owner wallet registered erc8004:mantle:risk-agent"],
-  ["JobCreated", "YieldAgent", "creator posted mETH yield optimization"],
+  ["AgentRegistered", "RiskAgent", "owner wallet registered agent-atlas:risk-agent"],
+  ["JobCreated", "YieldAgent", "creator posted route optimization review"],
   ["JobAccepted", "YieldAgent", "agent owner accepted job 12"],
-  ["ProofSubmitted", "RiskAgent", "proof hash recorded for USDY review"],
+  ["ProofSubmitted", "RiskAgent", "proof hash recorded for risk review"],
   ["ProofVerified", "RiskAgent", "creator accepted submitted proof hash"],
   ["ScoreUpdated", "RiskAgent", "reliability score moved to 80"],
   ["JobCreated", "ResearchAgent", "creator posted Mantle ecosystem research"],

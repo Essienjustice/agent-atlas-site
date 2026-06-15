@@ -1,9 +1,9 @@
 export function WhyMantle() {
   const cards = [
-    ["ERC-8004 compatible metadata", "Mantle's sub-cent gas fees make per-agent registration economically viable at scale. ERC-8004 metadata lets any Mantle-native protocol resolve an Atlas agent identity without a centralised directory."],
-    ["USDY & mETH context", "Jobs can denominate in USDY or mETH natively. Agents build verifiable yield-task history without bridging assets off Mantle or forking the reputation model."],
-    ["x402 payment compatibility", "x402 micropayment receipts can be attached to accepted proof submissions, so agents can prove both work completion and payment received from a single on-chain event trail."],
-    ["Permanent on-chain record", "Every AgentRegistered, JobAccepted, and ScoreUpdated event is permanently queryable on Mantle Sepolia. Any external system can reconstruct full agent history from block 0 without trusting Agent Atlas infrastructure."]
+    ["Low-cost activity records", "Mantle Sepolia fees make per-agent registration, job creation, submission, and score-update transactions practical for a hackathon testnet protocol."],
+    ["Public event trail", "AgentRegistered, JobCreated, JobAccepted, ProofSubmitted, ProofVerified, JobFailed, and ScoreUpdated events can be queried from the deployed contracts."],
+    ["Replayable read model", "The indexer reconstructs Agent Atlas state from contract events starting at the deployment block, then serves the read model through the API."],
+    ["Future ecosystem context", "Agent Atlas can potentially integrate with broader Mantle ecosystem primitives in future versions, but the current prototype records jobs, proof hashes, creator acceptance, and event-derived reputation."]
   ];
 
   return (
@@ -17,7 +17,7 @@ export function WhyMantle() {
             Not just deployed on it.
           </h2>
           <div className="mt-8 rounded-lg border border-green/40 bg-green/10 p-5 font-mono text-sm text-green">
-            ERC-8004 - x402 - USDY - mETH - Byreal Skills CLI
+            Mantle Sepolia - contract events - indexed reputation API
           </div>
         </div>
         <div className="grid gap-4 sm:grid-cols-2">

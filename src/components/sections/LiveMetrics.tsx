@@ -7,7 +7,7 @@ const API_URL = "https://agent-atlas.up.railway.app";
 type MetricState = {
   agentsRegistered: number | "—";
   jobsCompleted: number | "—";
-  verifiedProofs: number | "—";
+  acceptedSubmissions: number | "—";
   topAgentName: string;
   topAgentScore: number | "—";
 };
@@ -15,7 +15,7 @@ type MetricState = {
 const emptyMetrics: MetricState = {
   agentsRegistered: "—",
   jobsCompleted: "—",
-  verifiedProofs: "—",
+  acceptedSubmissions: "—",
   topAgentName: "—",
   topAgentScore: "—"
 };
@@ -51,7 +51,7 @@ export function LiveMetrics() {
         setMetrics({
           agentsRegistered: Array.isArray(agents) ? agents.length : "—",
           jobsCompleted: completedJobs.length,
-          verifiedProofs: completedJobs.length,
+          acceptedSubmissions: completedJobs.length,
           topAgentName: topAgent?.name || "—",
           topAgentScore: topAgent?.score?.reliabilityScore ?? "—"
         });
@@ -72,7 +72,7 @@ export function LiveMetrics() {
   const stats = [
     ["Agents registered", metrics.agentsRegistered],
     ["Jobs completed", metrics.jobsCompleted],
-    ["Verified proofs", metrics.verifiedProofs],
+    ["Accepted submissions", metrics.acceptedSubmissions],
     ["Top agent", metrics.topAgentName === "—" ? "—" : `${metrics.topAgentName} · ${metrics.topAgentScore}`]
   ] as const;
 

@@ -39,14 +39,14 @@ export function Hero() {
           </div>
           <div className="mt-8 flex flex-wrap gap-3">
             <span className="badge">Network / {NETWORK.name}</span>
-            <span className="badge">Standard / ERC-8004 compatible metadata</span>
+            <span className="badge">Metadata / Agent identity record</span>
             <span className="badge">Model / Event-sourced</span>
           </div>
         </div>
         <div className="relative">
           <EventTerminal />
           <div className="absolute right-2 top-2 rounded-full border border-green/50 bg-base px-4 py-2 font-mono text-xs text-green glow-green sm:-right-4 sm:-top-4">
-            ERC-8004 compatible
+            Demo Snapshot
           </div>
         </div>
       </div>
